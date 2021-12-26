@@ -78,7 +78,8 @@
                 data: {url_give: url, comment_give: comment},
                 success: function (response) { // 성공하면
                     if (response["result"] == "success") {
-                        alert(response["msg"]);
+                        alert(response["msg"]);함
+                        window.location.reload();
                     }
                 }
             })
