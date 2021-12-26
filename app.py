@@ -1,6 +1,9 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
+from pymongo import MongoClient
 
 app = Flask(__name__)
+client = MongoClient('localhost', 27017)
+db = client.alonememo
 
 
 @app.route('/')
@@ -14,6 +17,26 @@ def show_articles():
     result = {
         'result': 'success',
         'msg': 'test'
+    }
+    return jsonify(result)
+
+
+@app.route('/memo', methods=['post'])
+def post_article():
+    # ajax 사용해서 전송하는 data 정보는 request.form 변수에 저장됨
+    # print(request.form.get('url_give'))
+    # print(request.form.get('comment_give'))
+    memo = {
+    'url':request.form.get('url_give'),
+    'comment':request.form.get('comment_give'),
+    }
+
+    # MongoDB저장
+    db.article.insert_one(memo)
+
+    result = {
+        'result': 'success',
+        'msg': '저장완료'
     }
     return jsonify(result)
 
